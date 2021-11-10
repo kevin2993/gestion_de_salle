@@ -1,0 +1,18 @@
+package com.example.gestionSalle.dao;
+
+import com.example.gestionSalle.model.Equipement;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface EquipementDao extends JpaRepository<Equipement, Integer> {
+
+    List<Equipement> findAll();
+
+     @Query("SELECT e FROM Equipement e where e.idSalle = :nomSalle ")
+     List<Equipement> chercherEquipementSalle(@Param("nomSalle") int nomSalle);
+}
