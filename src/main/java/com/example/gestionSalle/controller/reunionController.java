@@ -73,16 +73,17 @@ public class reunionController {
     @RequestMapping(value = "salleR-dispo/{time}", method = RequestMethod.GET)
     public List<Salle> getSalleNbPerson(@PathVariable @DateTimeFormat(pattern = "HH:mm:ss") Date time) throws salleIntrouvableException {
         //ajout d'une heure sur l'heure de disponibilité
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(time);
-        cal.add(Calendar.HOUR,1);
-       Date time1 =cal.getTime();
+
 
         List<Reservation> reservations = reservationDao.findAll();
         List<Salle> salles = salleDao.findAll();
         List<Salle> salleP = new ArrayList<Salle>();
         for (Reservation reservation : reservations) {
-            if (time.after(reservation.getCreneau()) && time1.compareTo(reservation.getCreneau())!=0)
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(reservation.getCreneau());
+            cal.add(Calendar.HOUR,1);
+            Date time1 =cal.getTime();
+            if (time.after(reservation.getCreneau()) && time.compareTo(time1)!=0)
                 for(Salle salle: salles)
                     if(reservation.getNomSalle().compareTo(salle.getNom())==0)
                         salleP.add(salle);
