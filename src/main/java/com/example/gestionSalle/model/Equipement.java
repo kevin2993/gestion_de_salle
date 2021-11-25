@@ -2,6 +2,7 @@ package com.example.gestionSalle.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Optional;
 
 @Entity
 public class Equipement {
@@ -36,6 +37,10 @@ public class Equipement {
     public void setIdSalle(int idSalle) {
         this.idSalle = idSalle;
     }
+
+    /*public Optional<String> getNom() {
+        return Optional.ofNullable(nom);
+    }*/
 
     public String getNom() {
         return nom;

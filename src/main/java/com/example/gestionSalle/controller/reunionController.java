@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class reunionController {
@@ -61,10 +59,13 @@ public class reunionController {
         //return salleDao.chercherSalleDispo(nbperson);
         List<Salle> salles = salleDao.findAll();
         List<Salle> salleP = new ArrayList<Salle>();
-        for (Salle salle : salles) {
+       /* for (Salle salle : salles) {
             if ((salle.getCapacitMax() * 0.7) >= nbperson)
                 salleP.add(salle);
-        }
+        }*/
+        salleP=salles.stream().filter(salle -> salle.getCapacitMax() * 0.7 >= nbperson)
+                .sorted(Comparator.comparing(Salle::getCapacitMax))
+                              .collect(Collectors.toList());
         if (salleP.isEmpty()) throw new salleIntrouvableException("Aucune salle n'est en capacité de contenir "+nbperson+" personne");
         return salleP;
     }
